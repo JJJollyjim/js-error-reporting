@@ -10,9 +10,9 @@ rec {
     name = "report-error.js";
     src = ./clientSrc;
     buildPhase = ''
-        substituteAllInPlace report-error.js
-        ${pkgs.minify}/bin/minify report-error.js > $out
-      '';
+      substituteAllInPlace report-error.js
+      ${pkgs.minify}/bin/minify report-error.js > $out
+    '';
     dontInstall = true;
   };
 
@@ -22,18 +22,7 @@ rec {
 
   test =
     (with pkgs.lib;
-      let
-        discoverTests = val:
-          if !isAttrs val then val
-          else if hasAttr "test" val then callTest val
-          else mapAttrs (n: s: discoverTests s) val;
-        handleTest = path: args:
-          discoverTests (import path ({ inherit system pkgs; } // args));
-        handleTestOn = systems: path: args:
-          if elem system systems then handleTest path args
-          else {};
-      in
-        handleTest ./test.nix { inherit nixpkgs server client; }
+      import ./test.nix { inherit nixpkgs pkgs server client; }
     );
 
 }
