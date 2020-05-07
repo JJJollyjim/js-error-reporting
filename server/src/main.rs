@@ -78,7 +78,7 @@ struct LokiLabels {
     #[serde(rename = "type")]
     typ: String,
     ua: String,
-    loglevel: &'static str,
+    level: &'static str,
     // TODO IP? Origin?
 }
 
@@ -163,7 +163,7 @@ fn log<'r>(
                 job: conf.loki_job_name.clone(),
                 session: data.session,
                 app: data.app,
-                loglevel: classify(&*conf, &data.typ),
+                level: classify(&*conf, &data.typ),
                 typ: data.typ,
                 ua: ua.0.to_owned(),
             },

@@ -91,12 +91,12 @@ pkgs.nixosTest
 
       with subtest("Manual report from Firefox works"):
           server.wait_until_succeeds(
-              "${pkgs.grafana-loki}/bin/logcli --addr='http://localhost:3100' query --no-labels '{job=\"my-errors-job\",app=\"foo\",type=\"blep\",loglevel=\"critical\"}' | grep -q 'baz'"
+              "${pkgs.grafana-loki}/bin/logcli --addr='http://localhost:3100' query --no-labels '{job=\"my-errors-job\",app=\"foo\",type=\"blep\",level=\"critical\"}' | grep -q 'baz'"
           )
 
       with subtest("Error report from Firefox works"):
           server.wait_until_succeeds(
-              "${pkgs.grafana-loki}/bin/logcli --addr='http://localhost:3100' query --no-labels '{job=\"my-errors-job\",app=\"foo\",type=\"jsError\",loglevel=\"error\"}' | grep -q 'msg'"
+              "${pkgs.grafana-loki}/bin/logcli --addr='http://localhost:3100' query --no-labels '{job=\"my-errors-job\",app=\"foo\",type=\"jsError\",level=\"error\"}' | grep -q 'msg'"
           )
     '';
   }
