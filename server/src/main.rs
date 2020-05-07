@@ -1,5 +1,5 @@
 #![feature(proc_macro_hygiene, decl_macro, never_type)]
-#![warn(clippy::all)]
+#![deny(clippy::all)]
 
 #[macro_use]
 extern crate rocket;
@@ -94,6 +94,8 @@ struct DataBlob {
     obj: Box<RawValue>,
     session: String,
     ua: String,
+    os: Option<String>,
+    browser: Option<String>,
 }
 
 fn send_thread(rx: mpsc::Receiver<LokiReq>) {
@@ -164,6 +166,8 @@ fn log<'r>(
     tx: State<mpsc::SyncSender<LokiReq>>,
     conf: State<Config>,
 ) -> Response<'r> {
+    let parsed_ua = woothee::parser::Parser::new().parse(ua.0).map(|res| (res.name.to_owned(), res.os.to_owned()));
+
     let data = data.into_inner();
     let req = LokiReq {
         streams: [LokiStream {
@@ -175,11 +179,23 @@ fn log<'r>(
             },
             values: [LokiOneLog(
                 Utc::now().timestamp_nanos().to_string(),
-                DataBlob {
-                    session: data.session,
-                    ua: ua.0.to_owned(),
-                    obj: data.data,
-                },
+                if let Some((browser, os)) = parsed_ua {
+                    DataBlob {
+                        session: data.session,
+                        ua: ua.0.to_owned(),
+                        obj: data.data,
+                        browser: Some(browser),
+                        os: Some(os),
+                    }
+                } else {
+                    DataBlob {
+                        session: data.session,
+                        ua: ua.0.to_owned(),
+                        obj: data.data,
+                        browser: None,
+                        os: None,
+                    }
+                }
             )],
         }],
     };

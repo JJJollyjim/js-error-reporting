@@ -1457,6 +1457,10 @@ rec {
             name = "tracing-subscriber";
             packageId = "tracing-subscriber";
           }
+          {
+            name = "woothee";
+            packageId = "woothee";
+          }
         ];
         
       };
@@ -5299,6 +5303,29 @@ rec {
           "serialization-serde" = [ "transactions" "serde" ];
           "transactions" = [ "winapi/ktmw32" ];
         };
+      };
+      "woothee" = rec {
+        crateName = "woothee";
+        version = "0.11.0";
+        edition = "2018";
+        sha256 = "1vnl8mp3kv2f761ig4gddaj93za82il9fd96gibjwxwwbmfa9mc9";
+        authors = [
+          "hhatto <hhatto.jp@gmail.com>"
+        ];
+        dependencies = [
+          {
+            name = "lazy_static";
+            packageId = "lazy_static";
+          }
+          {
+            name = "regex";
+            packageId = "regex";
+          }
+        ];
+        features = {
+          "generate" = [ "yaml-rust" "tera" "tempdir" "glob" "serde" "serde_json" "serde_derive" ];
+        };
+        resolvedDefaultFeatures = [ "default" ];
       };
       "ws2_32-sys" = rec {
         crateName = "ws2_32-sys";
