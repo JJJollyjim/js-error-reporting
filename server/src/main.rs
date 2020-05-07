@@ -22,6 +22,37 @@ struct Config {
     #[serde(with = "serde_with::rust::display_fromstr")]
     loki_push_url: reqwest::Url,
     loki_job_name: String,
+
+    #[serde(default = "Vec::new")]
+    classify_critical: Vec<String>,
+    #[serde(default = "Vec::new")]
+    classify_error: Vec<String>,
+    #[serde(default = "Vec::new")]
+    classify_warning: Vec<String>,
+    #[serde(default = "Vec::new")]
+    classify_info: Vec<String>,
+    #[serde(default = "Vec::new")]
+    classify_debug: Vec<String>,
+    #[serde(default = "Vec::new")]
+    classify_trace: Vec<String>,
+}
+
+fn classify(conf: &Config, typ: &str) -> &'static str {
+    if conf.classify_critical.iter().any(|x| x == typ) {
+        "critical"
+    } else if conf.classify_error.iter().any(|x| x == typ) {
+        "error"
+    } else if conf.classify_warning.iter().any(|x| x == typ) {
+        "warning"
+    } else if conf.classify_info.iter().any(|x| x == typ) {
+        "info"
+    } else if conf.classify_debug.iter().any(|x| x == typ) {
+        "debug"
+    } else if conf.classify_trace.iter().any(|x| x == typ) {
+        "trace"
+    } else {
+        "unknown"
+    }
 }
 
 #[derive(Deserialize, Debug)]
@@ -46,6 +77,7 @@ struct LokiLabels {
     #[serde(rename = "type")]
     typ: String,
     ua: String,
+    loglevel: &'static str,
     // TODO IP? Origin?
 }
 
@@ -130,6 +162,7 @@ fn log<'r>(
                 job: conf.loki_job_name.clone(),
                 session: data.session,
                 app: data.app,
+                loglevel: classify(&*conf, &data.typ),
                 typ: data.typ,
                 ua: ua.0.to_owned(),
             },
