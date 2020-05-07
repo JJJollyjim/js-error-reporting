@@ -51,6 +51,7 @@ fn classify(conf: &Config, typ: &str) -> &'static str {
     } else if conf.classify_trace.iter().any(|x| x == typ) {
         "trace"
     } else {
+        warn!(typ, "unclassified type");
         "unknown"
     }
 }

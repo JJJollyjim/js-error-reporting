@@ -29,6 +29,8 @@ pkgs.nixosTest
             RUST_LOG = "warn";
             JS_ERROR_REPORTING_LOKI_PUSH_URL = "http://localhost:3100/loki/api/v1/push";
             JS_ERROR_REPORTING_LOKI_JOB_NAME = "my-errors-job";
+            JS_ERROR_REPORTING_CLASSIFY_ERROR = "jsError";
+            JS_ERROR_REPORTING_CLASSIFY_CRITICAL = "blep";
           };
 
           serviceConfig = {
@@ -69,6 +71,7 @@ pkgs.nixosTest
       };
     };
 
+    skipLint = true;
 
     testScript = ''
       start_all()
@@ -88,12 +91,12 @@ pkgs.nixosTest
 
       with subtest("Manual report from Firefox works"):
           server.wait_until_succeeds(
-              "${pkgs.grafana-loki}/bin/logcli --addr='http://localhost:3100' query --no-labels '{job=\"my-errors-job\",app=\"foo\",type=\"blep\"}' | grep -q 'baz'"
+              "${pkgs.grafana-loki}/bin/logcli --addr='http://localhost:3100' query --no-labels '{job=\"my-errors-job\",app=\"foo\",type=\"blep\",loglevel=\"critical\"}' | grep -q 'baz'"
           )
 
       with subtest("Error report from Firefox works"):
           server.wait_until_succeeds(
-              "${pkgs.grafana-loki}/bin/logcli --addr='http://localhost:3100' query --no-labels '{job=\"my-errors-job\",app=\"foo\",type=\"jsError\"}' | grep -q 'msg'"
+              "${pkgs.grafana-loki}/bin/logcli --addr='http://localhost:3100' query --no-labels '{job=\"my-errors-job\",app=\"foo\",type=\"jsError\",loglevel=\"error\"}' | grep -q 'msg'"
           )
     '';
   }
