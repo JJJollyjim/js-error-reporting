@@ -73,11 +73,9 @@ struct LokiReq {
 #[derive(Serialize, Debug)]
 struct LokiLabels {
     job: String,
-    session: String,
     app: String,
     #[serde(rename = "type")]
     typ: String,
-    ua: String,
     level: &'static str,
     // TODO IP? Origin?
 }
@@ -85,7 +83,17 @@ struct LokiLabels {
 #[derive(Serialize, Debug)]
 struct LokiStream {
     stream: LokiLabels,
-    values: [(String, String); 1],
+    values: [LokiOneLog; 1],
+}
+
+#[derive(Serialize, Debug)]
+struct LokiOneLog(String, #[serde(with = "serde_with::json::nested")] DataBlob);
+
+#[derive(Serialize, Debug)]
+struct DataBlob {
+    obj: Box<RawValue>,
+    session: String,
+    ua: String,
 }
 
 fn send_thread(rx: mpsc::Receiver<LokiReq>) {
@@ -161,15 +169,17 @@ fn log<'r>(
         streams: [LokiStream {
             stream: LokiLabels {
                 job: conf.loki_job_name.clone(),
-                session: data.session,
                 app: data.app,
                 level: classify(&*conf, &data.typ),
                 typ: data.typ,
-                ua: ua.0.to_owned(),
             },
-            values: [(
+            values: [LokiOneLog(
                 Utc::now().timestamp_nanos().to_string(),
-                data.data.get().to_owned(),
+                DataBlob {
+                    session: data.session,
+                    ua: ua.0.to_owned(),
+                    obj: data.data,
+                },
             )],
         }],
     };
