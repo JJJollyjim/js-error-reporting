@@ -1,4 +1,4 @@
-{ nixpkgs, pkgs, server, client, ... }:
+{ pkgs, server, client, ... }:
 let
   lib = pkgs.lib;
   testPage = pkgs.writeText "index.html" ''
@@ -7,12 +7,12 @@ let
     <script>notARealFunction</script>
   '';
 in
-(pkgs.callPackage "${nixpkgs}/nixos/lib/testing-python.nix" {}).makeTest
+pkgs.nixosTest
   {
     name = "integration";
 
     nodes = {
-      server = { ... }: {
+      server = { pkgs, ... }: {
         services.loki = {
           enable = true;
           configFile = "${pkgs.grafana-loki.src}/cmd/loki/loki-local-config.yaml";

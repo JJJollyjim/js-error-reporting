@@ -1,7 +1,7 @@
 let
   sources = import nix/sources.nix;
 in
-{ nixpkgs ? sources.nixpkgs, pkgs ? import ./nixpkgs.nix { inherit nixpkgs; nixpkgsMozilla = sources.nixpkgs-mozilla; } }:
+{ rustChannel ? ((pkgs.extend (import "${sources.nixpkgs-mozilla}/rust-overlay.nix")).latest.rustChannels.nightly), pkgs ? import sources.nixpkgs {} }:
 with pkgs;
 with lib;
 rec {
@@ -16,13 +16,9 @@ rec {
     dontInstall = true;
   };
 
-  server = (pkgs.callPackage ./server/Cargo.nix {}).rootCrate.build.override {
+  server = ((pkgs.extend (super: self: { rustc = rustChannel.rust; inherit (rustChannel) cargo rust rust-fmt rust-std clippy; })).callPackage ./server/Cargo.nix {}).rootCrate.build.override {
     runTests = true;
   };
 
-  test =
-    (with pkgs.lib;
-      import ./test.nix { inherit nixpkgs pkgs server client; }
-    );
-
+  test = pkgs.callPackage ./test.nix { inherit server client; };
 }
