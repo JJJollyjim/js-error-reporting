@@ -5,10 +5,10 @@
         "homepage": "",
         "owner": "kolloch",
         "repo": "crate2nix",
-        "rev": "4e52f0ff179e55f7d5530255ceb872ca02f5f1ce",
-        "sha256": "0kgwsfajz9k6fzdk5bqxkwhvnhrvlb86j44phj0bg0ccza2jxbww",
+        "rev": "c4a479172ebafdd3baf36aa274b2168b4fd42f40",
+        "sha256": "1jnkqhqwkvl9l5zifgd2cgdd9pr9979x5n6463h55yzjxbj9vni6",
         "type": "tarball",
-        "url": "https://github.com/kolloch/crate2nix/archive/4e52f0ff179e55f7d5530255ceb872ca02f5f1ce.tar.gz",
+        "url": "https://github.com/kolloch/crate2nix/archive/c4a479172ebafdd3baf36aa274b2168b4fd42f40.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
@@ -17,10 +17,10 @@
         "homepage": "https://github.com/nmattia/niv",
         "owner": "nmattia",
         "repo": "niv",
-        "rev": "f73bf8d584148677b01859677a63191c31911eae",
-        "sha256": "0jlmrx633jvqrqlyhlzpvdrnim128gc81q5psz2lpp2af8p8q9qs",
+        "rev": "9cb7ef336bb71fd1ca84fc7f2dff15ef4b033f2a",
+        "sha256": "1ajyqr8zka1zlb25jx1v4xys3zqmdy3prbm1vxlid6ah27a8qnzh",
         "type": "tarball",
-        "url": "https://github.com/nmattia/niv/archive/f73bf8d584148677b01859677a63191c31911eae.tar.gz",
+        "url": "https://github.com/nmattia/niv/archive/9cb7ef336bb71fd1ca84fc7f2dff15ef4b033f2a.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
@@ -29,22 +29,22 @@
         "homepage": "https://github.com/NixOS/nixpkgs",
         "owner": "NixOS",
         "repo": "nixpkgs-channels",
-        "rev": "fce7562cf46727fdaf801b232116bc9ce0512049",
-        "sha256": "14rvi69ji61x3z88vbn17rg5vxrnw2wbnanxb7y0qzyqrj7spapx",
+        "rev": "4762fba469e2baa82f983b262e2c06ac2fdaae67",
+        "sha256": "1sidky93vc2bpnwb8avqlym1p70h2szhkfiam549377v9r5ld2r1",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs-channels/archive/fce7562cf46727fdaf801b232116bc9ce0512049.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/4762fba469e2baa82f983b262e2c06ac2fdaae67.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-mozilla": {
         "branch": "master",
-        "description": "mozilla related nixpkgs (extends nixos/nixpkgs repo)",
-        "homepage": null,
+        "description": "Mozilla overlay for Nixpkgs.",
+        "homepage": "",
         "owner": "mozilla",
         "repo": "nixpkgs-mozilla",
-        "rev": "e912ed483e980dfb4666ae0ed17845c4220e5e7c",
-        "sha256": "08fvzb8w80bkkabc1iyhzd15f4sm7ra10jn32kfch5klgl0gj3j3",
+        "rev": "18cd4300e9bf61c7b8b372f07af827f6ddc835bb",
+        "sha256": "1s0d1l5y7a3kygjbibssjnj7fcc87qaa5s9k4kda0j13j9h4zwgr",
         "type": "tarball",
-        "url": "https://github.com/mozilla/nixpkgs-mozilla/archive/e912ed483e980dfb4666ae0ed17845c4220e5e7c.tar.gz",
+        "url": "https://github.com/mozilla/nixpkgs-mozilla/archive/18cd4300e9bf61c7b8b372f07af827f6ddc835bb.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
