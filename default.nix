@@ -1,7 +1,7 @@
 let
   sources = import nix/sources.nix;
 in
-{ rustChannel ? ((pkgs.extend (import "${sources.nixpkgs-mozilla}/rust-overlay.nix")).latest.rustChannels.nightly), pkgs ? import sources.nixpkgs {} }:
+{ rustChannel ? (((pkgs.extend (import "${sources.nixpkgs-mozilla}/rust-overlay.nix")).rustChannelOf {date="2022-01-01"; channel="nightly";})), pkgs ? import sources.nixpkgs {} }:
 with pkgs;
 with lib;
 rec {
